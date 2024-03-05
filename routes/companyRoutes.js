@@ -14,12 +14,54 @@ router.get('/', async (req, res) => {
   }
 });
 
+// GET - Récupérer une entreprise par son ID
+router.get('/:companyId', async (req, res) => {
+  const companyId = req.params.companyId;
+  try {
+    const company = await Company.findById(companyId);
+    if (!company) {
+      return res.status(404).send({ error: "Entreprise introuvable." });
+    }
+    res.send(company);
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
+
 // POST /companies
 router.post('/', async (req, res) => {
   try {
     const company = new Company(req.body);
     await company.save();
     res.status(201).send(company);
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
+
+// PUT - Mettre à jour une entreprise existante
+router.put('/:companyId', async (req, res) => {
+  const companyId = req.params.companyId;
+  try {
+    const company = await Company.findByIdAndUpdate(companyId, req.body, { new: true });
+    if (!company) {
+      return res.status(404).send({ error: "Entreprise introuvable." });
+    }
+    res.send(company);
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
+
+// DELETE - Supprimer une entreprise
+router.delete('/:companyId', async (req, res) => {
+  const companyId = req.params.companyId;
+  try {
+    const company = await Company.findByIdAndDelete(companyId);
+    if (!company) {
+      return res.status(404).send({ error: "Entreprise introuvable." });
+    }
+    res.send({ message: "Entreprise supprimée avec succès." });
   } catch (err) {
     res.status(400).send(err);
   }

@@ -21,4 +21,11 @@ app.use('/customers', require('./routes/customerRoutes'));
 // Utiliser les routes de l'entreprise
 app.use('/companies', require('./routes/companyRoutes'));
 
+// Utiliser les routes de prestations
+app.use('/prestation', require('./routes/prestationsRoutes'));
+
+// Utiliser les routes des interventions
+app.use('/intervention', require('./routes/interventionsRoutes'));
+
+
 module.exports = { app, PORT };

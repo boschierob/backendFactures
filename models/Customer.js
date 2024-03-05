@@ -8,8 +8,7 @@ const addressSchema = new mongoose.Schema({
     required: true
   },
   number: {
-    type: String,
-    required: true
+    type: String
   },
   extra_info: String,
   postal_code: {
@@ -66,6 +65,12 @@ const customerSchema = new mongoose.Schema({
   customer_address: {
     type: addressSchema,
     required: true
+  },
+  customer_telephone:{
+    type: [String]
+  },
+  customer_telephone:{
+    type: String
   },
   customer_number: String,
   prestations: [prestationsSchema],
