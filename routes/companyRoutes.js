@@ -42,12 +42,30 @@ router.post('/', async (req, res) => {
 // PUT - Mettre à jour une entreprise existante
 router.put('/:companyId', async (req, res) => {
   const companyId = req.params.companyId;
+  const customerId = req.body.customerId;
+  const customerIds = req.body.customerIds;
+
   try {
-    const company = await Company.findByIdAndUpdate(companyId, req.body, { new: true });
+    const company = await Company.findById(companyId);
     if (!company) {
       return res.status(404).send({ error: "Entreprise introuvable." });
     }
-    res.send(company);
+    
+    if (customerIds && Array.isArray(customerIds)) {
+      // Ajouter chaque customerId à la liste des clients s'il est défini
+      company.customers.push(...customerIds);
+    } else {
+      // Si un seul customerId est fourni dans la requête
+      const customerId = req.body.customerId;
+      if (customerId) {
+        company.customers.push(customerId);
+      }
+    }
+
+    // Enregistrer les modifications
+    const updatedCompany = await company.save();
+
+    res.send(updatedCompany);
   } catch (err) {
     res.status(400).send(err);
   }

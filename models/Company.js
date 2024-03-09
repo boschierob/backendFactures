@@ -10,8 +10,17 @@ const contactSchema = new mongoose.Schema({
 });
 
 const bankSchema = new mongoose.Schema({
+  bank_name: String,
   adress: String,
-  logo: Buffer // Veuillez noter que le type Buffer est utilisé pour stocker des images en format binaire
+  name_proprietaire: String,
+  iban: String,
+  bic: String,
+  code_banque: String,
+  code_guichet: String,
+  numero_compte: String,
+  cle: String,
+  escompte_message: String,
+
 });
 
 const companySchema = new mongoose.Schema({
@@ -19,6 +28,7 @@ const companySchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  logo: Buffer,
   representativeName: String,
   cp: String,
   city: String,
@@ -34,7 +44,11 @@ const companySchema = new mongoose.Schema({
   rna: String,
   siret: String,
   activite: String,
-  banques: [bankSchema]
+  banques: [bankSchema],
+  customers: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Customer'
+  }]
 });
 
 const Company = mongoose.model('Company', companySchema);

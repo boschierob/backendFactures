@@ -2,7 +2,9 @@
 
 const express = require('express');
 const router = express.Router();
-const Customer = require('../models/Customer'); // Importez votre modèle de customer ici
+const Customer = require('../models/Customer');
+const Company = require('../models/Company');
+
 
 // GET /customers
 router.get('/', async (req, res) => {
@@ -16,9 +18,19 @@ router.get('/', async (req, res) => {
 
 // CREATE POST /customers
 router.post('/', async (req, res) => {
+  console.log('enter the route create customer');
   try {
     const customer = new Customer(req.body);
     await customer.save();
+     // Récupérer l'ID de l'entreprise associée au nouveau client
+     const companyId = customer.company;
+
+     // Mettre à jour l'entreprise correspondante pour ajouter l'ID du nouveau client à sa liste de clients
+     await Company.findByIdAndUpdate(
+       companyId,
+       { $addToSet: { customers: customer._id } }, // Utiliser $addToSet pour éviter les doublons
+       { new: true }
+     );
     res.status(201).send(customer);
   } catch (err) {
     res.status(400).send(err);
