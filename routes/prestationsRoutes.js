@@ -18,7 +18,7 @@ router.get('/:customerId/prestations', async (req, res) => {
 });
 
 // POST - Ajouter une nouvelle prestation pour un client
-router.post('/:customerId/prestations', async (req, res) => {
+router.post('/:customerId/add', async (req, res) => {
   const customerId = req.params.customerId;
 
   try {

@@ -49,8 +49,11 @@ router.put('/:id', async (req, res) => {
       return res.status(404).send({ error: "Client introuvable." });
     }
 
-    res.send(updatedCustomer); // Renvoyer le client mis à jour
-  } catch (err) {
+    res.status(201).json({
+      message: "Mise à jour réussie.",
+      updatedCustomer: updatedCustomer
+    });
+    } catch (err) {
     res.status(400).send(err); // En cas d'erreur, renvoyer une réponse d'erreur
   }
 });
