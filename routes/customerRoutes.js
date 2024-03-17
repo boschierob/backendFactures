@@ -16,6 +16,21 @@ router.get('/', async (req, res) => {
   }
 });
 
+// customers filtered by company id  // GET  /customers ?companyId
+router.get('/filteredByCompany', async (req, res) => {
+  console.log('customers filterd by company : companyId '+req.query.companyId);
+  try {
+    let query = {};
+    if (req.query.companyId) {
+      query.company = req.query.companyId;
+    }
+    const customers = await Customer.find(query);
+    res.json(customers);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
 // CREATE POST /customers
 router.post('/', async (req, res) => {
   console.log('enter the route create customer');
